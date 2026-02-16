@@ -17,12 +17,12 @@ public class Bank {
 		account.setId(id);
 	}
 
-	public void deposit(String accountId, float v) {
+	public void deposit(String accountId, double v) {
 		Account account = this.getAccounts().get(accountId);
 		account.deposit(v);
 	}
 
-	public void withdraw(String accountId, float v) {
+	public void withdraw(String accountId, double v) {
 		Account account = this.getAccounts().get(accountId);
 		account.withdraw(v);
 	}

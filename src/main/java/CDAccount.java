@@ -1,5 +1,5 @@
 public class CDAccount extends Account {
-	public CDAccount(float apr, float balance) {
+	public CDAccount(double apr, double balance) {
 		super(apr, balance);
 	}
 }

@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BankTest {
 	public static final String CHECKING_ACCOUNT_ID = "12345678";
 	public static final String CD_ACCOUNT_ID = "12345679";
-	public static final float APR = 0.3F;
-	public static final float CD_STARTING_BALANCE = 50F;
-	public static final float DEPOSIT_AMOUNT = 100F;
-	public static final float WITHDRAW_AMOUNT = 30F;
+	public static final double APR = 0.3F;
+	public static final double CD_STARTING_BALANCE = 50F;
+	public static final double DEPOSIT_AMOUNT = 100F;
+	public static final double WITHDRAW_AMOUNT = 30F;
 	Bank bank;
 	CheckingAccount checkingAccount;
 	CDAccount cdAccount;
@@ -59,7 +59,7 @@ public class BankTest {
 		bank.addAccount(CHECKING_ACCOUNT_ID, checkingAccount);
 
 		bank.deposit(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT);
-		float actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
+		double actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
 
 		assertEquals(DEPOSIT_AMOUNT, actual);
 	}
@@ -70,7 +70,7 @@ public class BankTest {
 		bank.addAccount(CD_ACCOUNT_ID, cdAccount);
 
 		bank.deposit(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT);
-		float actual = bank.getAccounts().get(CD_ACCOUNT_ID).getBalance();
+		double actual = bank.getAccounts().get(CD_ACCOUNT_ID).getBalance();
 
 		assertEquals(CD_STARTING_BALANCE, actual);
 	}
@@ -82,7 +82,7 @@ public class BankTest {
 		bank.deposit(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT);
 		bank.withdraw(CHECKING_ACCOUNT_ID, WITHDRAW_AMOUNT);
 
-		float actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
+		double actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
 
 		assertEquals(DEPOSIT_AMOUNT - WITHDRAW_AMOUNT, actual);
 	}
@@ -95,7 +95,7 @@ public class BankTest {
 		bank.deposit(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT);
 		bank.withdraw(CHECKING_ACCOUNT_ID, WITHDRAW_AMOUNT);
 
-		float actual = bank.getAccounts().get(CD_ACCOUNT_ID).getBalance();
+		double actual = bank.getAccounts().get(CD_ACCOUNT_ID).getBalance();
 
 		assertEquals(CD_STARTING_BALANCE, actual);
 	}
@@ -107,7 +107,7 @@ public class BankTest {
 		bank.deposit(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT);
 		bank.withdraw(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT + 1);
 
-		float actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
+		double actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
 		assertEquals(0, actual);
 	}
 
@@ -118,7 +118,7 @@ public class BankTest {
 		bank.deposit(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT);
 		bank.deposit(CHECKING_ACCOUNT_ID, DEPOSIT_AMOUNT);
 
-		float actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
+		double actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
 		assertEquals(DEPOSIT_AMOUNT * 2, actual);
 	}
 
@@ -130,7 +130,7 @@ public class BankTest {
 		bank.withdraw(CHECKING_ACCOUNT_ID, WITHDRAW_AMOUNT);
 		bank.withdraw(CHECKING_ACCOUNT_ID, WITHDRAW_AMOUNT);
 
-		float actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
+		double actual = bank.getAccounts().get(CHECKING_ACCOUNT_ID).getBalance();
 		assertEquals(DEPOSIT_AMOUNT - WITHDRAW_AMOUNT * 2, actual);
 	}
 

@@ -1,22 +1,22 @@
 public abstract class Account {
-	private float balance;
-	private final float apr;
+	private double balance;
+	private final double apr;
 	private String id;
 
-	Account(float apr, float balance) {
+	Account(double apr, double balance) {
 		this.balance = balance;
 		this.apr = apr;
 	}
 
-	public float getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public void deposit(float v) {
+	public void deposit(double v) {
 		balance += v;
 	}
 
-	public void withdraw(float v) {
+	public void withdraw(double v) {
 		if (v > balance) {
 			balance = 0;
 		} else {
@@ -24,7 +24,7 @@ public abstract class Account {
 		}
 	}
 
-	public float getAPR() {
+	public double getAPR() {
 		return apr;
 	}
 
