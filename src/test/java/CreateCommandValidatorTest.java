@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CommandValidatorTest {
+public class CreateCommandValidatorTest {
 	private static final String CREATE_ACTION = "Create";
 	private static final String SAVINGS_ACCOUNT_TYPE = "savings";
 	private static final String DEFAULT_ACCOUNT_ID_1 = "12345678";
@@ -19,7 +19,7 @@ public class CommandValidatorTest {
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
-		commandValidator = new CommandValidator(bank);
+		commandValidator = new CreateCommandValidator(bank);
 	}
 
 	@Test
@@ -87,4 +87,49 @@ public class CommandValidatorTest {
 				.validate(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1);
 		assertFalse(actual);
 	}
+
+	@Test
+	public void creating_savings_account_with_non_numeric_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + "12345abc" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_savings_account_with_less_than_8_digits_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + "1234567" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_savings_account_with_more_than_8_digits_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + "123456789" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+//	@Test
+//	public void creating_savings_account_with_account_balance_is_invalid() {
+//		boolean actual = commandValidator.validate("Create savings 12345678 0.6 2000");
+//		assertFalse(actual);
+//	}
+//
+//	@Test
+//	public void creating_checking_account_with_account_balance_is_invalid() {
+//		boolean actual = commandValidator.validate("Create checking 12345678 0.6 2000");
+//		assertFalse(actual);
+//	}
+//
+//	@Test
+//	public void creating_savings_account_with_0_balance_is_invalid() {
+//		boolean actual = commandValidator.validate("Create savings 12345678 0.6 0");
+//		assertFalse(actual);
+//	}
+//
+//	@Test
+//	public void creating_checking_account_with_0_balance_is_invalid() {
+//		boolean actual = commandValidator.validate("Create checking 12345678 0.6 0");
+//		assertFalse(actual);
+//	}
 }
