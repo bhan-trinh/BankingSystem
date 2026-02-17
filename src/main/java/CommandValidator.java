@@ -1,9 +1,24 @@
 public class CommandValidator {
-	public CommandValidator(Bank bank) {
+	CreateCommandValidator createCommandValidator;
 
+	public CommandValidator(Bank bank) {
+		createCommandValidator = new CreateCommandValidator(bank);
 	}
 
 	public boolean validate(String command) {
-		return true;
+		boolean actual = false;
+
+		String action = command.split(" ")[0];
+		action = action.toLowerCase();
+
+		switch (action) {
+		case "create":
+			actual = createCommandValidator.validate(command);
+			break;
+		case "deposit":
+			break;
+
+		}
+		return actual;
 	}
 }

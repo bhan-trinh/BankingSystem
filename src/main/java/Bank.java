@@ -26,4 +26,8 @@ public class Bank {
 		Account account = this.getAccounts().get(accountId);
 		account.withdraw(v);
 	}
+
+	public boolean checkAccountExistsById(String quickId) {
+		return accounts.get(quickId) != null;
+	}
 }
