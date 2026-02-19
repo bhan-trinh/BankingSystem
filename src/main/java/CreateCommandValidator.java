@@ -6,35 +6,58 @@ public class CreateCommandValidator extends CommandValidator {
 
 	@Override
 	public boolean validate(String command) {
-//		String accountType = command.split(" ")[1];
-		String quickId = command.split(" ")[2];
-		double apr;
+		String accountType;
 		try {
-			apr = Double.parseDouble(command.split(" ")[3]);
+			accountType = command.split(" ")[1];
 		} catch (Exception e) {
 			return false;
 		}
-//		double balance = Double.parseDouble(command.split(" ")[4]);
 
-		boolean isValidApr = 0 <= apr && apr <= 10;
-
-		boolean isIdCorrectLength = quickId.length() == 8;
-		boolean isIdNumeric = isIdNumeric(quickId);
-		boolean isIdNotInBank = !bank.checkAccountExistsById(quickId);
-		boolean isValidId = isIdNumeric && isIdNotInBank && isIdCorrectLength;
-
-		return isValidId && isValidApr;
-	}
-
-	public boolean isIdNumeric(String quickId) {
-		if (quickId == null) {
-			return false;
-		}
+		String quickId;
 		try {
-			double d = Double.parseDouble(quickId);
-		} catch (NumberFormatException nfe) {
+			quickId = command.split(" ")[2];
+		} catch (Exception e) {
 			return false;
 		}
-		return true;
+
+		double apr = 0;
+		try {
+			apr = Double.parseDouble(command.split(" ")[3]);
+		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
+
+		double balance = 0;
+		boolean isBalanceSpecified = false;
+		try {
+			balance = Double.parseDouble(command.split(" ")[4]);
+			isBalanceSpecified = true;
+		} catch (Exception e) {
+			if (accountType.equals("cd")) {
+				return false;
+			}
+		}
+
+		boolean isValidApr = isValidApr(apr);
+
+		boolean isIdNotInBank = !bank.checkAccountExistsById(quickId);
+		boolean isValidId = isIdNotInBank && isValidId(quickId);
+
+		boolean isValidBalance = false;
+
+		switch (accountType.toLowerCase()) {
+		case "checking":
+			isValidBalance = !isBalanceSpecified;
+			break;
+		case "savings":
+			isValidBalance = !isBalanceSpecified;
+			break;
+		case "cd":
+			isValidBalance = 1000 <= balance && balance <= 10000;
+			break;
+		}
+
+		return isValidId && isValidApr && isValidBalance;
 	}
+
 }

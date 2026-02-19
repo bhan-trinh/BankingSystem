@@ -8,4 +8,28 @@ public class CommandValidator {
 	public boolean validate(String command) {
 		return false;
 	}
+
+	public boolean isValidApr(double apr) {
+		return 0 <= apr && apr <= 10;
+	}
+
+	public boolean isValidId(String quickId) {
+		boolean isNumeric = isIdNumeric(quickId);
+		boolean isValidLength = quickId.length() == 8;
+
+		return isNumeric && isValidLength;
+
+	}
+
+	public boolean isIdNumeric(String quickId) {
+		if (quickId == null) {
+			return false;
+		}
+		try {
+			double d = Double.parseDouble(quickId);
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+		return true;
+	}
 }
