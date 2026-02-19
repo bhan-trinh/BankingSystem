@@ -25,21 +25,50 @@ public class CreateCommandValidatorTest {
 		commandValidator = new CreateCommandValidator(bank);
 	}
 
+	// ===== GENERAL =====
 	@Test
-	public void savings_account_can_be_created_with_valid_parameters() {
+	public void creating_savings_account_with_valid_parameters_is_valid() {
 		boolean actual = commandValidator.validate(
 				CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
 		assertTrue(actual);
 	}
 
 	@Test
-	public void savings_account_can_be_created_with_valid_parameters_case_insensitive() {
+	public void creating_checking_account_with_valid_parameters_is_valid() {
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_valid_parameters_is_valid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
+				+ " " + DEFAULT_APR_STRING + " " + DEFAULT_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_savings_account_with_valid_parameters_case_insensitive_is_valid() {
 		boolean actual = commandValidator.validate("CrEaTe sAvInGs " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
 		assertTrue(actual);
 	}
 
 	@Test
-	public void savings_account_can_be_created_with_valid_parameters_in_bank_with_other_accounts() {
+	public void creating_checking_account_with_valid_parameters_case_insensitive_is_valid() {
+		boolean actual = commandValidator
+				.validate("CrEaTe chEcKing " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_valid_parameters_case_insensitive_is_valid() {
+		boolean actual = commandValidator.validate(
+				"CrEaTe cD " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING + " " + DEFAULT_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_savings_account_with_valid_parameters_in_bank_with_other_accounts_is_valid() {
 		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR_FLOAT);
 		bank.addAccount(DEFAULT_ACCOUNT_ID_2, checkingAccount);
 		boolean actual = commandValidator.validate(
@@ -48,11 +77,48 @@ public class CreateCommandValidatorTest {
 	}
 
 	@Test
+	public void creating_checking_account_with_valid_parameters_in_bank_with_other_accounts_is_valid() {
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR_FLOAT);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_2, checkingAccount);
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_valid_parameters_in_bank_with_other_accounts_is_valid() {
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR_FLOAT);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_2, checkingAccount);
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
+				+ " " + DEFAULT_APR_STRING + " " + DEFAULT_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	// ===== ID =====
+	@Test
 	public void creating_savings_account_with_duplicate_id_is_invalid() {
 		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR_FLOAT);
 		bank.addAccount(DEFAULT_ACCOUNT_ID_1, checkingAccount);
 		boolean actual = commandValidator.validate(
 				CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_checking_account_with_duplicate_id_is_invalid() {
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR_FLOAT);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, checkingAccount);
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_duplicate_id_is_invalid() {
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR_FLOAT);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, checkingAccount);
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING);
 		assertFalse(actual);
 	}
 
@@ -64,9 +130,37 @@ public class CreateCommandValidatorTest {
 	}
 
 	@Test
+	public void creating_checking_account_with_non_numeric_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + "12345abc" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_non_numeric_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + "12345abc" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
 	public void creating_savings_account_with_less_than_8_digits_id_is_invalid() {
 		boolean actual = commandValidator
 				.validate(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + "1234567" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_checking_account_with_less_than_8_digits_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + "1234567" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_less_than_8_digits_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + "1234567" + " " + DEFAULT_APR_STRING);
 		assertFalse(actual);
 	}
 
@@ -78,9 +172,38 @@ public class CreateCommandValidatorTest {
 	}
 
 	@Test
+	public void creating_checking_account_with_more_than_8_digits_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + "123456789" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_more_than_8_digits_id_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + "123456789" + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	// ===== APR =====
+	@Test
 	public void creating_savings_account_with_zero_apr_is_valid() {
 		boolean actual = commandValidator.validate(
 				CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + ZERO_APR_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_checking_account_with_zero_apr_is_valid() {
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + ZERO_APR_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_zero_apr_is_valid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
+				+ " " + ZERO_APR_STRING + " " + DEFAULT_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
@@ -92,9 +215,37 @@ public class CreateCommandValidatorTest {
 	}
 
 	@Test
+	public void creating_checking_account_with_max_apr_is_valid() {
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + MAX_APR_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_max_apr_is_valid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
+				+ " " + MAX_APR_STRING + " " + DEFAULT_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
 	public void creating_savings_account_with_more_than_max_apr_is_invalid() {
 		boolean actual = commandValidator.validate(
 				CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + MAX_APR_STRING + "1");
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_checking_account_with_more_than_max_apr_is_invalid() {
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + MAX_APR_STRING + "1");
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_more_than_max_apr_is_invalid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
+				+ " " + MAX_APR_STRING + "1" + " " + DEFAULT_BALANCE_STRING);
 		assertFalse(actual);
 	}
 
@@ -106,11 +257,41 @@ public class CreateCommandValidatorTest {
 	}
 
 	@Test
+	public void creating_checking_account_with_negative_apr_is_invalid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " "
+				+ DEFAULT_ACCOUNT_ID_1 + " " + "-" + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_negative_apr_is_invalid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
+				+ " " + "-" + DEFAULT_APR_STRING + " " + DEFAULT_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
 	public void creating_savings_account_with_no_apr_is_invalid() {
 		boolean actual = commandValidator
 				.validate(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1);
 		assertFalse(actual);
 	}
+
+	@Test
+	public void creating_checking_account_with_no_apr_is_invalid() {
+		boolean actual = commandValidator
+				.validate(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_no_apr_is_invalid() {
+		boolean actual = commandValidator.validate(
+				CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	// ===== BALANCE =====
 
 	@Test
 	public void creating_savings_account_with_account_balance_is_invalid() {
