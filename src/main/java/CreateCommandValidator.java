@@ -20,7 +20,6 @@ public class CreateCommandValidator extends CommandValidator {
 			return false;
 		}
 
-		double apr = 0;
 		try {
 			apr = Double.parseDouble(command.split(" ")[3]);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
@@ -43,19 +42,12 @@ public class CreateCommandValidator extends CommandValidator {
 		boolean isIdNotInBank = !bank.checkAccountExistsById(quickId);
 		boolean isValidId = isIdNotInBank && isValidId(quickId);
 
-		boolean isValidBalance = false;
-
-		switch (accountType.toLowerCase()) {
-		case "checking":
-			isValidBalance = !isBalanceSpecified;
-			break;
-		case "savings":
-			isValidBalance = !isBalanceSpecified;
-			break;
-		case "cd":
-			isValidBalance = 1000 <= balance && balance <= 10000;
-			break;
-		}
+		boolean isValidBalance = switch (accountType.toLowerCase()) {
+		case "checking" -> !isBalanceSpecified;
+		case "savings" -> !isBalanceSpecified;
+		case "cd" -> 1000 <= balance && balance <= 10000;
+		default -> false;
+		};
 
 		return isValidId && isValidApr && isValidBalance;
 	}

@@ -26,7 +26,7 @@ public class CommandValidator {
 			return false;
 		}
 		try {
-			double d = Double.parseDouble(quickId);
+			Double.parseDouble(quickId);
 		} catch (NumberFormatException nfe) {
 			return false;
 		}
