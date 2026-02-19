@@ -20,6 +20,7 @@ public class CreateCommandValidator extends CommandValidator {
 			return false;
 		}
 
+		double apr;
 		try {
 			apr = Double.parseDouble(command.split(" ")[3]);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
