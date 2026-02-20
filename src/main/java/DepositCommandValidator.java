@@ -5,22 +5,21 @@ public class DepositCommandValidator extends CommandValidator {
 
 	@Override
 	public boolean validate(String command) {
-		String action;
+		String action, quickId;
+		double balance;
 		try {
 			action = command.split(" ")[0];
-		} catch (Exception e) {
-			return false;
-		}
-		if (!action.equalsIgnoreCase("deposit"))
-			return false;
-
-		String quickId;
-		try {
 			quickId = command.split(" ")[1];
+			balance = Double.parseDouble(command.split(" ")[2]);
 		} catch (Exception e) {
 			return false;
 		}
 
+		boolean isValidAction = action.equalsIgnoreCase("deposit");
+		return isValidAction && isValidDepositBalance(quickId, balance);
+	}
+
+	public boolean isValidDepositBalance(String quickId, double balance) {
 		Account depositAccount;
 		if (!bank.checkAccountExistsById(quickId)) {
 			return false;
@@ -28,20 +27,7 @@ public class DepositCommandValidator extends CommandValidator {
 			depositAccount = bank.getAccounts().get(quickId);
 		}
 
-		if (!depositAccount.isDepositable())
-			return false;
-
-		double balance;
-		try {
-			balance = Double.parseDouble(command.split(" ")[2]);
-		} catch (Exception e) {
-			return false;
-		}
-
-		if (balance < 0 || balance > depositAccount.getMaxDepositAmount())
-			return false;
-
-		return true;
+		boolean isValidBalance = !(balance < 0) && !(balance > depositAccount.getMaxDepositAmount());
+		return isValidBalance && depositAccount.isDepositable();
 	}
-
 }
