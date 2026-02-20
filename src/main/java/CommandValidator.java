@@ -1,5 +1,7 @@
 public class CommandValidator {
 	private static final int ID_LENGTH = 8;
+	private static final int MAX_APR = 10;
+	private static final int MIN_APR = 0;
 
 	Bank bank;
 
@@ -12,7 +14,7 @@ public class CommandValidator {
 	}
 
 	public boolean isValidApr(double apr) {
-		return 0 <= apr && apr <= 10;
+		return MIN_APR <= apr && apr <= MAX_APR;
 	}
 
 	public boolean isValidId(String quickId) {

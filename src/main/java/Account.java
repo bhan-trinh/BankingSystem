@@ -2,8 +2,8 @@ public abstract class Account {
 	private double balance;
 	private final double apr;
 	private String id;
-	protected double maxDepositLimit;
-	protected boolean isDepositable;
+	private final double maxDepositLimit;
+	private final boolean isDepositable;
 
 	Account(double apr, double balance, boolean isDepositable, double depositLimit) {
 		this.balance = balance;
