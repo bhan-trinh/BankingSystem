@@ -30,15 +30,12 @@ public class CreateCommandValidator extends CommandValidator {
 			accountType = command.split(" ")[1].toLowerCase();
 			balance = Double.parseDouble(command.split(" ")[4]);
 			isBalanceSpecified = true;
-		} catch (Exception e) {
-			if (accountType.equals("cd")) {
-				return false;
-			}
+		} catch (Exception ignored) {
 		}
 
 		if (accountType.equals("checking") || accountType.equals("savings"))
 			return !isBalanceSpecified;
-		else if (accountType.equals("cd"))
+		else if (accountType.equals("cd") || isBalanceSpecified)
 			return 1000 <= balance && balance <= 10000;
 		return false;
 	}
