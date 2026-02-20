@@ -19,6 +19,65 @@ public class DepositCommandValidatorTest {
 		commandValidator = new DepositCommandValidator(bank);
 	}
 
+	// ===== GENERAL =====
+	@Test
+	public void depositing_with_no_specified_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_with_no_parameters_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_with_non_existing_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID_2 + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_with_non_numeric_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + "12345abc" + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_with_less_than_8_digit_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + "1234567" + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_with_more_than_8_digit_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + "123456789" + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
 	// ===== SAVINGS =====
 	@Test
 	public void depositing_into_savings_account_with_valid_parameters_is_valid() {
