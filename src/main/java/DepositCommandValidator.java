@@ -31,7 +31,7 @@ public class DepositCommandValidator extends CommandValidator {
 		if (!depositAccount.isDepositable())
 			return false;
 
-		double balance = 0;
+		double balance;
 		try {
 			balance = Double.parseDouble(command.split(" ")[2]);
 		} catch (Exception e) {

@@ -1,4 +1,6 @@
 public class CommandValidator {
+	private static final int ID_LENGTH = 8;
+
 	Bank bank;
 
 	public CommandValidator(Bank bank) {
@@ -15,13 +17,13 @@ public class CommandValidator {
 
 	public boolean isValidId(String quickId) {
 		boolean isNumeric = isIdNumeric(quickId);
-		boolean isValidLength = quickId.length() == 8;
+		boolean isValidLength = quickId.length() == ID_LENGTH;
 
 		return isNumeric && isValidLength;
 
 	}
 
-	public boolean isIdNumeric(String quickId) {
+	private boolean isIdNumeric(String quickId) {
 		if (quickId == null) {
 			return false;
 		}
