@@ -53,12 +53,20 @@ public class CreateCommandValidator extends CommandValidator {
 			}
 		}
 
-		boolean isValidBalance = switch (accountType.toLowerCase()) {
-		case "checking" -> !isBalanceSpecified;
-		case "savings" -> !isBalanceSpecified;
-		case "cd" -> 1000 <= balance && balance <= 10000;
-		default -> false;
-		};
+		boolean isValidBalance = false;
+		switch (accountType.toLowerCase()) {
+		case "checking":
+			isValidBalance = !isBalanceSpecified;
+			break;
+		case "savings":
+			isValidBalance = !isBalanceSpecified;
+			break;
+		case "cd":
+			isValidBalance = 1000 <= balance && balance <= 10000;
+			break;
+		default:
+			isValidBalance = false;
+		}
 
 		if (!isValidBalance) {
 			return false;
