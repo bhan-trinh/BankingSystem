@@ -1,0 +1,80 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class DepositCommandValidatorTest {
+	private static final String DEPOSIT_ACTION = "Deposit";
+	private static final String SAVINGS_ACCOUNT_TYPE = "savings";
+	private static final String CHECKING_ACCOUNT_TYPE = "checking";
+	private static final String CD_ACCOUNT_TYPE = "cd";
+	private static final String DEFAULT_ACCOUNT_ID_1 = "12345678";
+	private static final String DEFAULT_ACCOUNT_ID_2 = "98765432";
+	private static final String DEFAULT_VALID_BALANCE_STRING = "500";
+	Bank bank;
+	CommandValidator commandValidator;
+
+	@BeforeEach
+	public void setUp() {
+		bank = new Bank();
+		commandValidator = new DepositCommandValidator(bank);
+	}
+
+	// ===== SAVINGS =====
+	@Test
+	public void depositing_into_savings_account_with_valid_parameters_is_valid() {
+		SavingsAccount savingsAccount = new SavingsAccount(0.6);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void depositing_into_savings_account_with_negative_amount_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(0.6);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID_1 + " " + "-" + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_into_savings_account_with_zero_amount_is_valid() {
+		SavingsAccount savingsAccount = new SavingsAccount(0.6);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, savingsAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID_1 + " " + "0");
+		assertTrue(actual);
+	}
+
+	@Test
+	public void depositing_into_savings_account_with_max_amount_is_valid() {
+		SavingsAccount savingsAccount = new SavingsAccount(0.6);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, savingsAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID_1 + " " + "2500");
+		assertTrue(actual);
+	}
+
+	@Test
+	public void depositing_into_savings_account_with_more_than_max_amount_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(0.6);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, savingsAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID_1 + " " + "2500" + ".1");
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_into_savings_account_with_no_specified_amount_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(0.6);
+		bank.addAccount(DEFAULT_ACCOUNT_ID_1, savingsAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID_1);
+		assertFalse(actual);
+	}
+}
