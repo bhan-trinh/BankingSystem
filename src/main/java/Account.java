@@ -36,4 +36,11 @@ public abstract class Account {
 		return id;
 	}
 
+	public boolean isDepositable() {
+		return false;
+	}
+
+	public double getMaxDepositAmount() {
+		return -1;
+	}
 }

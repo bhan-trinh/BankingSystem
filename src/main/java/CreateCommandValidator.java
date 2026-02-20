@@ -15,13 +15,6 @@ public class CreateCommandValidator extends CommandValidator {
 		if (!action.equalsIgnoreCase("create"))
 			return false;
 
-		String accountType;
-		try {
-			accountType = command.split(" ")[1];
-		} catch (Exception e) {
-			return false;
-		}
-
 		String quickId;
 		try {
 			quickId = command.split(" ")[2];
@@ -29,10 +22,23 @@ public class CreateCommandValidator extends CommandValidator {
 			return false;
 		}
 
+		if (bank.checkAccountExistsById(quickId) || !isValidId(quickId))
+			return false;
+
 		double apr;
 		try {
 			apr = Double.parseDouble(command.split(" ")[3]);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
+
+		if (!isValidApr(apr))
+			return false;
+
+		String accountType;
+		try {
+			accountType = command.split(" ")[1];
+		} catch (Exception e) {
 			return false;
 		}
 
@@ -47,11 +53,6 @@ public class CreateCommandValidator extends CommandValidator {
 			}
 		}
 
-		boolean isValidApr = isValidApr(apr);
-
-		boolean isIdNotInBank = !bank.checkAccountExistsById(quickId);
-		boolean isValidId = isIdNotInBank && isValidId(quickId);
-
 		boolean isValidBalance = switch (accountType.toLowerCase()) {
 		case "checking" -> !isBalanceSpecified;
 		case "savings" -> !isBalanceSpecified;
@@ -59,7 +60,11 @@ public class CreateCommandValidator extends CommandValidator {
 		default -> false;
 		};
 
-		return isValidId && isValidApr && isValidBalance;
+		if (!isValidBalance) {
+			return false;
+		}
+
+		return true;
 	}
 
 }
