@@ -6,6 +6,15 @@ public class CreateCommandValidator extends CommandValidator {
 
 	@Override
 	public boolean validate(String command) {
+		String action;
+		try {
+			action = command.split(" ")[0];
+		} catch (Exception e) {
+			return false;
+		}
+		if (!action.equalsIgnoreCase("create"))
+			return false;
+
 		String accountType;
 		try {
 			accountType = command.split(" ")[1];
