@@ -133,4 +133,43 @@ public class DepositCommandValidatorTest {
 		assertFalse(actual);
 	}
 
+	// ===== CD =====
+	@Test
+	public void depositing_into_cd_account_is_invalid() {
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, 2000);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_into_cd_account_with_negative_amount_is_invalid() {
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, 2000);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+
+		boolean actual = commandValidator
+				.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + "-" + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_into_cd_account_with_zero_amount_is_invalid() {
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, 2000);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + "0");
+		assertFalse(actual);
+	}
+
+	@Test
+	public void depositing_into_cd_account_with_no_specified_amount_is_invalid() {
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, 2000);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID);
+		assertFalse(actual);
+	}
+
 }
