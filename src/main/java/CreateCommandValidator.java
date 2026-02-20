@@ -64,8 +64,6 @@ public class CreateCommandValidator extends CommandValidator {
 		case "cd":
 			isValidBalance = 1000 <= balance && balance <= 10000;
 			break;
-		default:
-			isValidBalance = false;
 		}
 
 		if (!isValidBalance) {
