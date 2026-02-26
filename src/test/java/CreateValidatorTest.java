@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CreateCommandValidatorTest {
+public class CreateValidatorTest {
 	private static final String CREATE_ACTION = "Create";
 	private static final String SAVINGS_ACCOUNT_TYPE = "savings";
 	private static final String CHECKING_ACCOUNT_TYPE = "checking";
@@ -21,12 +21,12 @@ public class CreateCommandValidatorTest {
 	private static final String MIN_CD_CREATE_BALANCE_STRING = "1000";
 	private static final String MAX_CD_CREATE_BALANCE_STRING = "10000";
 	Bank bank;
-	CommandValidator commandValidator;
+	BaseValidator commandValidator;
 
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
-		commandValidator = new CreateCommandValidator(bank);
+		commandValidator = new CreateValidator(bank);
 	}
 
 	// ===== GENERAL =====

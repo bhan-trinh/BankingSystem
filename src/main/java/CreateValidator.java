@@ -1,6 +1,6 @@
-public class CreateCommandValidator extends CommandValidator {
+public class CreateValidator extends BaseValidator {
 
-	public CreateCommandValidator(Bank bank) {
+	public CreateValidator(Bank bank) {
 		super(bank);
 	}
 

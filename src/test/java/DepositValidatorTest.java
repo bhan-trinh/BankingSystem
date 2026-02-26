@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DepositCommandValidatorTest {
+public class DepositValidatorTest {
 	private static final String DEPOSIT_ACTION = "Deposit";
 	private static final String DEFAULT_ACCOUNT_ID = "12345678";
 	private static final String DEFAULT_ACCOUNT_ID_2 = "98765432";
@@ -18,12 +18,12 @@ public class DepositCommandValidatorTest {
 	private static final String ZERO_AMOUNT_STRING = "0";
 	private static final int DEFAULT_CD_BALANCE = 2000;
 	Bank bank;
-	CommandValidator commandValidator;
+	BaseValidator commandValidator;
 
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
-		commandValidator = new DepositCommandValidator(bank);
+		commandValidator = new DepositValidator(bank);
 	}
 
 	// ===== GENERAL =====

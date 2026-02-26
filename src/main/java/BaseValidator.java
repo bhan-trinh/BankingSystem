@@ -1,11 +1,11 @@
-public class CommandValidator {
+public class BaseValidator {
 	private static final int ID_LENGTH = 8;
 	private static final int MAX_APR = 10;
 	private static final int MIN_APR = 0;
 
 	Bank bank;
 
-	public CommandValidator(Bank bank) {
+	public BaseValidator(Bank bank) {
 		this.bank = bank;
 	}
 
