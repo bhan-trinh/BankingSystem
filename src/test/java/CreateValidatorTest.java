@@ -21,12 +21,12 @@ public class CreateValidatorTest {
 	private static final String MIN_CD_CREATE_BALANCE_STRING = "1000";
 	private static final String MAX_CD_CREATE_BALANCE_STRING = "10000";
 	Bank bank;
-	BaseValidator commandValidator;
+	CommandValidator commandValidator;
 
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
-		commandValidator = new CreateValidator(bank);
+		commandValidator = new CommandValidator(bank);
 	}
 
 	// ===== GENERAL =====

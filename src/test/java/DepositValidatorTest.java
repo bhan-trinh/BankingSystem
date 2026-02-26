@@ -18,12 +18,12 @@ public class DepositValidatorTest {
 	private static final String ZERO_AMOUNT_STRING = "0";
 	private static final int DEFAULT_CD_BALANCE = 2000;
 	Bank bank;
-	BaseValidator commandValidator;
+	CommandValidator commandValidator;
 
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
-		commandValidator = new DepositValidator(bank);
+		commandValidator = new CommandValidator(bank);
 	}
 
 	// ===== GENERAL =====
