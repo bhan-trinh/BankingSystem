@@ -1,9 +1,9 @@
 import java.util.List;
 
 public class MasterControl {
-	private CommandValidator commandValidator;
-	private CommandHandler commandHandler;
-	private CommandStorage commandStorage;
+	private final CommandValidator commandValidator;
+	private final CommandHandler commandHandler;
+	private final CommandStorage commandStorage;
 
 	public MasterControl(CommandValidator commandValidator, CommandHandler commandHandler,
 			CommandStorage commandStorage) {
