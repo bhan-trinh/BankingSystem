@@ -15,8 +15,6 @@ public class CreateCommandHandlerTest {
 	private static final String ZERO_APR_STRING = "0";
 	private static final String MAX_APR_STRING = "10";
 	private static final String DEFAULT_BALANCE_STRING = "2000";
-	private static final String ZERO_BALANCE_STRING = "0";
-	private static final String ONE_BALANCE_STRING = "1";
 	private static final String MIN_CD_CREATE_BALANCE_STRING = "1000";
 	private static final String MAX_CD_CREATE_BALANCE_STRING = "10000";
 
