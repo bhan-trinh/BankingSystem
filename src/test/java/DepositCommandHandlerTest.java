@@ -14,6 +14,8 @@ public class DepositCommandHandlerTest {
 	private static final String CHECKING_ACCOUNT_TYPE = "checking";
 
 	private static final String DEFAULT_ACCOUNT_ID = "12345678";
+	private static final String DEFAULT_ACCOUNT_ID_2 = "98765432";
+
 	private static final String DEFAULT_APR = "1.0";
 
 	private static final String DEPOSIT_100 = "100";
@@ -80,6 +82,18 @@ public class DepositCommandHandlerTest {
 		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_ZERO);
 
 		assertEquals(0, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
+	}
+
+	@Test
+	public void deposit_into_one_account_does_not_change_balance_of_another() {
+		commandHandler
+				.handle(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_APR);
+		commandHandler
+				.handle(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_2 + " " + DEFAULT_APR);
+
+		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_200);
+
+		assertEquals(0, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_2).getBalance());
 	}
 
 }
