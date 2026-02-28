@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CreateCommandHandlerTest {
+public class CreateHandlerTest {
 	private static final String CREATE_ACTION = "Create";
 	private static final String SAVINGS_ACCOUNT_TYPE = "savings";
 	private static final String CHECKING_ACCOUNT_TYPE = "checking";
