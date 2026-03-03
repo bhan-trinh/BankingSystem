@@ -1,3 +1,5 @@
+package banking;
+
 public class CommandHandler {
 	Bank bank;
 	BaseHandler handler;

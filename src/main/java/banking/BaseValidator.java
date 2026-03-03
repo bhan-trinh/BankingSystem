@@ -1,3 +1,5 @@
+package banking;
+
 public class BaseValidator {
 	private static final int ID_LENGTH = 8;
 	private static final int MAX_APR = 10;

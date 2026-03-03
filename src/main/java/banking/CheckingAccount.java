@@ -1,3 +1,5 @@
+package banking;
+
 public class CheckingAccount extends Account {
 
 	private static final int CHECKING_STARTING_BALANCE = 0;

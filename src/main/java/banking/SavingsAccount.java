@@ -1,3 +1,5 @@
+package banking;
+
 public class SavingsAccount extends Account {
 
 	private static final int SAVINGS_STARTING_BALANCE = 0;
