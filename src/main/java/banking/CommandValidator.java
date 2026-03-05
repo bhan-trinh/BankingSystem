@@ -18,6 +18,9 @@ public class CommandValidator {
 		case "deposit":
 			validator = new DepositValidator(bank);
 			break;
+		case "withdraw":
+			validator = new WithdrawValidator(bank);
+			break;
 		default:
 			return false;
 		}
