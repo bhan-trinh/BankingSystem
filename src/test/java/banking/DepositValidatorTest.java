@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DepositValidatorTest {
 	private static final String DEPOSIT_ACTION = "Deposit";
+	private static final String DEPOSIT_ACTION_CASE_INSENSITIVE = "dePosIt";
 	private static final String DEFAULT_ACCOUNT_ID = "12345678";
 	private static final String DEFAULT_ACCOUNT_ID_2 = "98765432";
 	private static final String NON_NUMERIC_ID = "12345abc";
@@ -115,6 +116,16 @@ public class DepositValidatorTest {
 
 		boolean actual = commandValidator
 				.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void depositing_into_savings_account_with_case_insensitive_is_valid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(
+				DEPOSIT_ACTION_CASE_INSENSITIVE + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
