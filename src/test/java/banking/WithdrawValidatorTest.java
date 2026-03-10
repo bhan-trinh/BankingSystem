@@ -29,6 +29,96 @@ public class WithdrawValidatorTest {
 		commandValidator = new CommandValidator(bank);
 	}
 
+	// GENERAL
+	// ===== GENERAL =====
+	@Test
+	public void withdrawing_with_no_specified_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_empty_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + "  " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_no_parameters_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_non_existing_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID_2 + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_non_numeric_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + NON_NUMERIC_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_less_than_8_digit_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + SEVEN_DIGIT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_more_than_8_digit_id_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + NINE_DIGIT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_wrong_parameter_order_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_VALID_BALANCE_STRING + " " + NINE_DIGIT_ID);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_with_wrong_parameter_order_is_invalid_2() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator
+				.validate(DEFAULT_VALID_BALANCE_STRING + " " + NINE_DIGIT_ID + " " + WITHDRAW_ACTION);
+		assertFalse(actual);
+	}
+
+	// ===== SAVINGS =====
 	@Test
 	public void withdrawing_from_savings_account_with_valid_parameters_is_valid() {
 		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
@@ -107,7 +197,7 @@ public class WithdrawValidatorTest {
 	}
 
 	@Test
-	public void withdrawing_from_savings_account_with_negative_amount_is_valid() {
+	public void withdrawing_from_savings_account_with_negative_amount_is_invalid() {
 		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
@@ -116,4 +206,17 @@ public class WithdrawValidatorTest {
 				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + "-" + DEFAULT_VALID_BALANCE_STRING);
 		assertFalse(actual);
 	}
+
+//	@Test
+//	public void withdrawing_from_savings_account_that_reached_maximum_withdrawal_per_month_is_invalid() {
+//		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+//		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+//		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+//		bank.withdraw(DEFAULT_ACCOUNT_ID, 100);
+//
+//		boolean actual = commandValidator
+//				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+//		assertFalse(actual);
+//	}
+
 }
