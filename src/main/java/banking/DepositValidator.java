@@ -10,15 +10,13 @@ public class DepositValidator extends BaseValidator {
 		String action, quickId;
 		double balance;
 		try {
-			action = command.split(" ")[0];
 			quickId = command.split(" ")[1];
 			balance = Double.parseDouble(command.split(" ")[2]);
 		} catch (Exception e) {
 			return false;
 		}
 
-		boolean isValidAction = action.equalsIgnoreCase("deposit");
-		return isValidAction && isValidDepositBalance(quickId, balance);
+		return isValidDepositBalance(quickId, balance);
 	}
 
 	public boolean isValidDepositBalance(String quickId, double balance) {
