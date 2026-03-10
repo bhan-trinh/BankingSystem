@@ -17,7 +17,7 @@ public class WithdrawValidatorTest {
 	private static final double DEFAULT_APR = 0.6;
 	private static final String DEFAULT_VALID_BALANCE_STRING = "300";
 	private static final String SAVINGS_MAX_WITHDRAW_AMOUNT_STRING = "1000";
-	private static final String CHECKING_MAX_DEPOSIT_AMOUNT_STRING = "1000";
+	private static final String CHECKING_MAX_WITHDRAW_AMOUNT_STRING = "400";
 	private static final String ZERO_AMOUNT_STRING = "0";
 	private static final int DEFAULT_CD_BALANCE = 2000;
 	Bank bank;
@@ -219,4 +219,92 @@ public class WithdrawValidatorTest {
 //		assertFalse(actual);
 //	}
 
+	// ===== CHECKING =====
+	@Test
+	public void withdrawing_from_checking_account_with_valid_parameters_is_valid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_with_valid_parameters_case_insensitive_is_valid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator.validate(
+				WITHDRAW_ACTION_CASE_INSENSITIVE + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_with_exactly_current_balance_is_valid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 300);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_with_more_than_current_balance_is_valid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING + ".1");
+		assertTrue(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_with_zero_amount_is_valid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + ZERO_AMOUNT_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_with_max_amount_is_valid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + CHECKING_MAX_WITHDRAW_AMOUNT_STRING);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_with_more_than_max_amount_is_invalid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator.validate(
+				WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + CHECKING_MAX_WITHDRAW_AMOUNT_STRING + ".1");
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_with_negative_amount_is_invalid() {
+		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + "-" + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
 }
