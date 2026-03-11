@@ -207,6 +207,16 @@ public class WithdrawValidatorTest {
 		assertFalse(actual);
 	}
 
+	@Test
+	public void withdrawing_from_savings_account_without_specified_amount_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID);
+		assertFalse(actual);
+	}
+
 //	@Test
 //	public void withdrawing_from_savings_account_that_reached_maximum_withdrawal_per_month_is_invalid() {
 //		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
@@ -222,7 +232,7 @@ public class WithdrawValidatorTest {
 	// ===== CHECKING =====
 	@Test
 	public void withdrawing_from_checking_account_with_valid_parameters_is_valid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
 
@@ -233,7 +243,7 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void withdrawing_from_checking_account_with_valid_parameters_case_insensitive_is_valid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
 
@@ -244,7 +254,7 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void withdrawing_from_checking_account_with_exactly_current_balance_is_valid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 300);
 
@@ -255,7 +265,7 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void withdrawing_from_checking_account_with_more_than_current_balance_is_valid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
 
@@ -266,7 +276,7 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void withdrawing_from_checking_account_with_zero_amount_is_valid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
 
@@ -277,7 +287,7 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void withdrawing_from_checking_account_with_max_amount_is_valid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
 
@@ -288,7 +298,7 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void withdrawing_from_checking_account_with_more_than_max_amount_is_invalid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
 
@@ -299,12 +309,22 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void withdrawing_from_checking_account_with_negative_amount_is_invalid() {
-		SavingsAccount checkingAccount = new SavingsAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
 
 		boolean actual = commandValidator
 				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + "-" + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void withdrawing_from_checking_account_without_specified_amount_is_invalid() {
+		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID);
 		assertFalse(actual);
 	}
 }
