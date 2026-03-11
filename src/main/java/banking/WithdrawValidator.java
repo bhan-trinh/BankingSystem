@@ -15,9 +15,19 @@ public class WithdrawValidator extends BaseValidator {
 			return false;
 		}
 
-		return !(amount > 1000) && amount >= 0 && bank.checkAccountExistsById(quickId);
-//        boolean isValidAction = action.equalsIgnoreCase("deposit");
-//        return isValidAction && isValidDepositBalance(quickId, balance);
+		return isValidWithdrawBalance(quickId, amount);
+	}
+
+	public boolean isValidWithdrawBalance(String quickId, double balance) {
+		Account withdrawAccount;
+		if (!bank.checkAccountExistsById(quickId)) {
+			return false;
+		} else {
+			withdrawAccount = bank.getAccounts().get(quickId);
+		}
+
+		boolean isValidBalance = !(balance < 0) && !(balance > withdrawAccount.getMaxWithdrawAmount());
+		return isValidBalance && withdrawAccount.isDepositable();
 	}
 
 }
