@@ -21,6 +21,9 @@ public class CommandHandler {
 		case "withdraw":
 			handler = new WithdrawHandler(bank);
 			break;
+		case "pass":
+			handler = new PassTimeHandler(bank);
+			break;
 		}
 
 		handler.handle(command);

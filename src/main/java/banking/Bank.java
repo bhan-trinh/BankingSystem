@@ -42,4 +42,8 @@ public class Bank {
 	public double getMaxPassTimeMonth() {
 		return MAX_PASS_TIME_MONTH;
 	}
+
+	public void pass(double month) {
+
+	}
 }
