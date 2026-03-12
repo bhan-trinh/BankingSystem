@@ -55,4 +55,8 @@ public abstract class Account {
 	public double getMaxWithdrawAmount() {
 		return maxWithdrawLimit;
 	}
+
+	public double getMinWithdrawAmount() {
+		return 0;
+	}
 }

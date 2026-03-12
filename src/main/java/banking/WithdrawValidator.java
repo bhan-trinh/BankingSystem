@@ -26,8 +26,9 @@ public class WithdrawValidator extends BaseValidator {
 			withdrawAccount = bank.getAccounts().get(quickId);
 		}
 
-		boolean isValidBalance = !(balance < 0) && !(balance > withdrawAccount.getMaxWithdrawAmount());
-		return isValidBalance && withdrawAccount.isDepositable();
+		boolean isValidBalance = balance >= withdrawAccount.getMinWithdrawAmount()
+				&& balance <= withdrawAccount.getMaxWithdrawAmount();
+		return isValidBalance;
 	}
 
 }
