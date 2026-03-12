@@ -12,8 +12,6 @@ public class WithdrawHandlerTest {
 	private static final double INITIAL_CD_BALANCE = 2000;
 	private static final String WITHDRAW_300_STRING = "300";
 	private static final String INITIAL_CD_BALANCE_STRING = "2000";
-	CommandHandler commandHandler;
-	Bank bank;
 
 	private static final String CREATE_ACTION = "create";
 	private static final String WITHDRAW_ACTION = "withdraw";
@@ -32,6 +30,9 @@ public class WithdrawHandlerTest {
 	private static final String WITHDRAW_500 = "500";
 	private static final String WITHDRAW_1000 = "1000";
 	private static final String WITHDRAW_ZERO = "0";
+
+	CommandHandler commandHandler;
+	Bank bank;
 
 	@BeforeEach
 	public void setUp() {
