@@ -31,7 +31,6 @@ public class WithdrawValidatorTest {
 		commandValidator = new CommandValidator(bank);
 	}
 
-	// GENERAL
 	// ===== GENERAL =====
 	@Test
 	public void withdrawing_with_no_specified_id_is_invalid() {
