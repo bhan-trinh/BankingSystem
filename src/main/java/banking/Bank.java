@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Bank {
+	private static final int MIN_PASS_TIME_MONTH = 1;
+	private static final int MAX_PASS_TIME_MONTH = 60;
 	private final Map<String, Account> accounts;
 
 	public Bank() {
@@ -31,5 +33,13 @@ public class Bank {
 
 	public boolean checkAccountExistsById(String quickId) {
 		return accounts.get(quickId) != null;
+	}
+
+	public double getMinPassTimeMonth() {
+		return MIN_PASS_TIME_MONTH;
+	}
+
+	public double getMaxPassTimeMonth() {
+		return MAX_PASS_TIME_MONTH;
 	}
 }
