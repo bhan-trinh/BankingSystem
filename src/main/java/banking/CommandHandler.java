@@ -18,6 +18,9 @@ public class CommandHandler {
 		case "deposit":
 			handler = new DepositHandler(bank);
 			break;
+		case "withdraw":
+			handler = new WithdrawHandler(bank);
+			break;
 		}
 
 		handler.handle(command);
