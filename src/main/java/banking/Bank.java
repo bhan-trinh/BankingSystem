@@ -1,6 +1,8 @@
 package banking;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Bank {
@@ -31,9 +33,9 @@ public class Bank {
 		account.deposit(v);
 	}
 
-	public void withdraw(String accountId, double v) {
+	public double withdraw(String accountId, double amountWithdrawn) {
 		Account account = this.getAccounts().get(accountId);
-		account.withdraw(v);
+		return account.withdraw(amountWithdrawn);
 	}
 
 	public boolean checkAccountExistsById(String quickId) {
@@ -48,20 +50,30 @@ public class Bank {
 		return MAX_PASS_TIME_MONTH;
 	}
 
-	public void pass(double month) {
+	public void pass(int month) {
+		List<String> accountsToClose = new ArrayList<>();
 		for (int i = 0; i < month; i++) {
 			for (var account : this.getAccounts().entrySet()) {
+				double balance = account.getValue().getBalance();
+				if (balance == 0) {
+					accountsToClose.add(account.getKey());
+					continue;
+				}
 				passMonthForAccount(account.getKey());
 			}
+		}
+
+		closeAccounts(accountsToClose);
+	}
+
+	private void closeAccounts(List<String> accountsToClose) {
+		for (String id : accountsToClose) {
+			this.getAccounts().remove(id);
 		}
 	}
 
 	private void passMonthForAccount(String accountId) {
 		double balance = this.getAccounts().get(accountId).getBalance();
-		if (balance == 0) {
-			closeAccount(accountId);
-			return;
-		}
 
 		if (balance < 100) {
 			applyMonthlyFees(accountId);

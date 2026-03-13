@@ -6,7 +6,7 @@ public class PassTimeHandler extends BaseHandler {
 	}
 
 	public void handle(String command) {
-		double month = Double.parseDouble(command.split(" ")[1]);
+		int month = Integer.parseInt(command.split(" ")[1]);
 		bank.pass(month);
 	}
 }
