@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TransferValidatorTest {
-	private static final String WITHDRAW_ACTION = "Withdraw";
-	private static final String WITHDRAW_ACTION_CASE_INSENSITIVE = "WIthDrAw";
 	private static final String SOURCE_ID = "12345678";
 	private static final String DEST_ID = "98765432";
 	private static final String NON_NUMERIC_ID = "12345abc";
