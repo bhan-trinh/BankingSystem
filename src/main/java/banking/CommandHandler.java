@@ -21,6 +21,11 @@ public class CommandHandler {
 		case "withdraw":
 			handler = new WithdrawHandler(bank);
 			break;
+		case "transfer":
+			DepositHandler depositHandler = new DepositHandler(bank);
+			WithdrawHandler withdrawHandler = new WithdrawHandler(bank);
+			handler = new TransferHandler(bank, depositHandler, withdrawHandler);
+			break;
 		case "pass":
 			handler = new PassTimeHandler(bank);
 			break;
