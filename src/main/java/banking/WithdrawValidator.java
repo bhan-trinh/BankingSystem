@@ -28,7 +28,7 @@ public class WithdrawValidator extends BaseValidator {
 
 		boolean isValidBalance = balance >= withdrawAccount.getMinWithdrawAmount()
 				&& balance <= withdrawAccount.getMaxWithdrawAmount();
-		return isValidBalance;
+		return isValidBalance && withdrawAccount.isWithdrawable();
 	}
 
 }

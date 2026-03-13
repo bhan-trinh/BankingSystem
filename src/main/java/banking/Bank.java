@@ -68,6 +68,7 @@ public class Bank {
 		}
 
 		this.getAccounts().get(accountId).applyAPR();
+		this.getAccounts().get(accountId).processMonth();
 
 	}
 

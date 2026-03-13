@@ -48,6 +48,10 @@ public abstract class Account {
 		return isDepositable;
 	}
 
+	public boolean isWithdrawable() {
+		return true;
+	}
+
 	public double getMaxDepositAmount() {
 		return maxDepositLimit;
 	}
@@ -75,5 +79,9 @@ public abstract class Account {
 	public void applyAPR() {
 		double amountAccrued = this.getAPR() / 100 / 12 * this.getBalance();
 		this.accrue(amountAccrued);
+	}
+
+	public void processMonth() {
+		return;
 	}
 }

@@ -213,17 +213,17 @@ public class WithdrawValidatorTest {
 		assertFalse(actual);
 	}
 
-//	@Test
-//	public void withdrawing_from_savings_account_that_reached_maximum_withdrawal_per_month_is_invalid() {
-//		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
-//		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
-//		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
-//		bank.withdraw(DEFAULT_ACCOUNT_ID, 100);
-//
-//		boolean actual = commandValidator
-//				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_VALID_BALANCE_STRING);
-//		assertFalse(actual);
-//	}
+	@Test
+	public void withdrawing_from_savings_account_that_reached_maximum_withdrawal_per_month_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 400);
+		bank.withdraw(DEFAULT_ACCOUNT_ID, 100);
+
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + WITHDRAW_300_STRING);
+		assertFalse(actual);
+	}
 
 	// ===== CHECKING =====
 	@Test
@@ -329,9 +329,10 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_cd_account_after_more_than_12_months_with_full_balance_is_valid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12 + 1);
+		String cdBalanceString = cdAccount.getBalance() + "";
 
-		boolean actual = commandValidator
-				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_CD_BALANCE_STRING);
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + cdBalanceString);
 		assertTrue(actual);
 	}
 
@@ -339,9 +340,11 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_cd_account_after_more_than_12_months_with_full_balance_case_insensitive_is_valid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12 + 1);
+		String cdBalanceString = cdAccount.getBalance() + "";
 
-		boolean actual = commandValidator.validate(
-				WITHDRAW_ACTION_CASE_INSENSITIVE + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_CD_BALANCE_STRING);
+		boolean actual = commandValidator
+				.validate(WITHDRAW_ACTION_CASE_INSENSITIVE + " " + DEFAULT_ACCOUNT_ID + " " + cdBalanceString);
 		assertTrue(actual);
 	}
 
@@ -349,9 +352,10 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_cd_account_after_exactly_12_months_with_full_balance_is_valid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12);
+		String cdBalanceString = cdAccount.getBalance() + "";
 
-		boolean actual = commandValidator
-				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_CD_BALANCE_STRING);
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + cdBalanceString);
 		assertTrue(actual);
 	}
 
@@ -359,9 +363,10 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_cd_account_after_12_months_with_more_than_current_balance_is_valid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12);
+		String cdBalanceString = (cdAccount.getBalance() + 1) + "";
 
-		boolean actual = commandValidator
-				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_CD_BALANCE_STRING + ".1");
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + cdBalanceString);
 		assertTrue(actual);
 	}
 
@@ -369,16 +374,19 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_cd_account_after_12_months_with_less_than_current_balance_is_invalid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12);
+		String cdBalanceString = (cdAccount.getBalance() - 1) + "";
 
-		boolean actual = commandValidator
-				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + WITHDRAW_300_STRING);
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + cdBalanceString);
 		assertFalse(actual);
 	}
 
 	@Test
 	public void withdrawing_from_empty_cd_account_with_zero_amount_is_valid() {
-		CDAccount cdAccount = new CDAccount(DEFAULT_APR, ZERO_BALANCE);
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12);
+		bank.withdraw(DEFAULT_ACCOUNT_ID, cdAccount.getBalance());
 
 		boolean actual = commandValidator
 				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + ZERO_AMOUNT_STRING);
@@ -389,6 +397,7 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_non_empty_cd_account_with_zero_amount_is_invalid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12);
 
 		boolean actual = commandValidator
 				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + ZERO_AMOUNT_STRING);
@@ -399,6 +408,7 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_cd_account_with_negative_amount_is_invalid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12);
 
 		boolean actual = commandValidator
 				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + "-" + DEFAULT_CD_BALANCE_STRING);
@@ -409,19 +419,20 @@ public class WithdrawValidatorTest {
 	public void withdrawing_from_cd_account_without_specified_amount_is_invalid() {
 		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12);
 
 		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID);
 		assertFalse(actual);
 	}
 
-	// Implementing Pass Time!
-//	@Test
-//	public void withdrawing_from_cd_account_before_12_months_with_full_balance_is_invalid() {
-//		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
-//		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
-//
-//		boolean actual = commandValidator
-//				.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_CD_BALANCE_STRING);
-//		assertFalse(actual);
-//	}
+	@Test
+	public void withdrawing_from_cd_account_before_12_months_with_full_balance_is_invalid() {
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
+		bank.pass(12 - 1);
+		String cdBalanceString = cdAccount.getBalance() + "";
+
+		boolean actual = commandValidator.validate(WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + cdBalanceString);
+		assertFalse(actual);
+	}
 }
