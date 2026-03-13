@@ -27,11 +27,14 @@ public abstract class Account {
 		balance += amount;
 	}
 
-	public void withdraw(double amount) {
+	public double withdraw(double amount) {
 		if (amount > balance) {
+			amount = balance;
 			balance = 0;
+			return amount;
 		} else {
 			balance -= amount;
+			return amount;
 		}
 	}
 
