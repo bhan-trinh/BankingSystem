@@ -7,13 +7,16 @@ public abstract class Account {
 	private final double maxDepositLimit;
 	private final double maxWithdrawLimit;
 	private final boolean isDepositable;
+	private final boolean isTransferable;
 
-	Account(double apr, double balance, boolean isDepositable, double depositLimit, double withdrawLimit) {
+	Account(double apr, double balance, boolean isDepositable, boolean isTransferable, double depositLimit,
+			double withdrawLimit) {
 		this.balance = balance;
 		this.apr = apr;
 		this.maxDepositLimit = depositLimit;
 		this.maxWithdrawLimit = withdrawLimit;
 		this.isDepositable = isDepositable;
+		this.isTransferable = isTransferable;
 	}
 
 	public double getBalance() {
@@ -50,6 +53,10 @@ public abstract class Account {
 
 	public boolean isWithdrawable() {
 		return true;
+	}
+
+	public boolean isTransferable() {
+		return isTransferable;
 	}
 
 	public double getMaxDepositAmount() {

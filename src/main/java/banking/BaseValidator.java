@@ -38,4 +38,15 @@ public class BaseValidator {
 		}
 		return true;
 	}
+
+	protected boolean isValidNumberOfArgument(String command, int numberOfArgs) {
+		String extra = "";
+		try {
+			extra = command.split(" ")[numberOfArgs];
+		} catch (Exception ignored) {
+
+		}
+
+		return extra.isEmpty();
+	}
 }

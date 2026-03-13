@@ -21,6 +21,9 @@ public class CommandValidator {
 		case "withdraw":
 			validator = new WithdrawValidator(bank);
 			break;
+		case "transfer":
+			validator = new TransferValidator(bank);
+			break;
 		case "pass":
 			validator = new PassTimeValidator(bank);
 			break;
