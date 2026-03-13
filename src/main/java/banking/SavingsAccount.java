@@ -14,9 +14,10 @@ public class SavingsAccount extends Account {
 	}
 
 	@Override
-	public void withdraw(double amount) {
+	public double withdraw(double amount) {
 		super.withdraw(amount);
 		isWithdrawnThisMonth = true;
+		return amount;
 	}
 
 	@Override
