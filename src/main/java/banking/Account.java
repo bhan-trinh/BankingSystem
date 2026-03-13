@@ -20,15 +20,15 @@ public abstract class Account {
 		return balance;
 	}
 
-	public void deposit(double v) {
-		balance += v;
+	public void deposit(double amount) {
+		balance += amount;
 	}
 
-	public void withdraw(double v) {
-		if (v > balance) {
+	public void withdraw(double amount) {
+		if (amount > balance) {
 			balance = 0;
 		} else {
-			balance -= v;
+			balance -= amount;
 		}
 	}
 
@@ -58,5 +58,22 @@ public abstract class Account {
 
 	public double getMinWithdrawAmount() {
 		return 0;
+	}
+
+	public void accrue(double amount) {
+		balance += amount;
+	}
+
+	public void deduct(double amount) {
+		if (amount > balance) {
+			balance = 0;
+		} else {
+			balance -= amount;
+		}
+	}
+
+	public void applyAPR() {
+		double amountAccrued = this.getAPR() / 100 / 12 * this.getBalance();
+		this.accrue(amountAccrued);
 	}
 }

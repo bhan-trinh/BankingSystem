@@ -11,6 +11,7 @@ public class PassTimeHandlerTest {
 
 	private static final double DEFAULT_APR = 1.0;
 	private static final String PASS_TIME_ACTION = "Pass";
+	private static final double ZERO_APR = 0;
 
 	CommandHandler commandHandler;
 	Bank bank;
@@ -53,7 +54,7 @@ public class PassTimeHandlerTest {
 
 	@Test
 	public void pass_month_deducts_fee_from_savings_account_with_99_99() {
-		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		SavingsAccount savingsAccount = new SavingsAccount(ZERO_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 99.99);
 
@@ -64,7 +65,7 @@ public class PassTimeHandlerTest {
 
 	@Test
 	public void pass_month_deducts_fee_from_checking_account_with_99_99() {
-		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(ZERO_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 99.99);
 
@@ -75,7 +76,7 @@ public class PassTimeHandlerTest {
 
 	@Test
 	public void pass_month_deducts_fee_from_cd_account_with_99_99() {
-		CDAccount cdAccount = new CDAccount(DEFAULT_APR, 99.99);
+		CDAccount cdAccount = new CDAccount(ZERO_APR, 99.99);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, cdAccount);
 
 		commandHandler.handle(PASS_TIME_ACTION + " 1");
@@ -85,7 +86,7 @@ public class PassTimeHandlerTest {
 
 	@Test
 	public void pass_month_does_not_deduct_fee_when_balance_is_100() {
-		CheckingAccount checkingAccount = new CheckingAccount(DEFAULT_APR);
+		CheckingAccount checkingAccount = new CheckingAccount(ZERO_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, checkingAccount);
 		bank.deposit(DEFAULT_ACCOUNT_ID, 100);
 
@@ -109,7 +110,7 @@ public class PassTimeHandlerTest {
 	public void pass_two_months_deduct_then_close_account() {
 		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
-		bank.deposit(DEFAULT_ACCOUNT_ID, 50);
+		bank.deposit(DEFAULT_ACCOUNT_ID, 25);
 
 		commandHandler.handle(PASS_TIME_ACTION + " 2");
 
@@ -123,8 +124,7 @@ public class PassTimeHandlerTest {
 		bank.deposit(DEFAULT_ACCOUNT_ID, 1000);
 
 		commandHandler.handle(PASS_TIME_ACTION + " 1");
-
-		assertTrue(bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance() > 1000);
+		assertEquals(1000 + DEFAULT_APR / 100 / 12 * 1000, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class PassTimeHandlerTest {
 
 		commandHandler.handle(PASS_TIME_ACTION + " 1");
 
-		assertTrue(bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance() > 1000);
+		assertEquals(1000 + DEFAULT_APR / 100 / 12 * 1000, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
 	}
 
 	@Test
@@ -145,6 +145,13 @@ public class PassTimeHandlerTest {
 
 		commandHandler.handle(PASS_TIME_ACTION + " 1");
 
-		assertTrue(bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance() > 1000);
+		double correctAmount = 1000;
+		double rate = DEFAULT_APR / 100 / 12;
+		for (int i = 0; i < 4; i++) {
+			correctAmount += rate * correctAmount;
+		}
+
+		assertEquals(correctAmount, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
+
 	}
 }

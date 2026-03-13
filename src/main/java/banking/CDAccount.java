@@ -13,4 +13,11 @@ public class CDAccount extends Account {
 	public double getMinWithdrawAmount() {
 		return this.getBalance();
 	}
+
+	@Override
+	public void applyAPR() {
+		for (int i = 0; i < 4; i++) {
+			super.applyAPR();
+		}
+	}
 }
