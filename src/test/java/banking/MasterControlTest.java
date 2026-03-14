@@ -42,6 +42,115 @@ public class MasterControlTest {
 	}
 
 	@Test
+	void checking_deposit_limit_behavior() {
+		input.add("Create checking 12345678 0.6");
+		input.add("Deposit 12345678 1000");
+		input.add("Deposit 12345678 1500"); // invalid
+		input.add("Pass 1");
+
+		List<String> actual = masterControl.start(input);
+
+		assertEquals(3, actual.size());
+		assertEquals("Checking 12345678 1000.50 0.60", actual.get(0));
+		assertEquals("Deposit 12345678 1000", actual.get(1));
+		assertEquals("Deposit 12345678 1500", actual.get(2));
+	}
+
+	@Test
+	void transfer_between_accounts_records_for_source_and_destination() {
+		input.add("Create checking 12345678 0.6");
+		input.add("Create savings 87654321 0.6");
+		input.add("Deposit 12345678 400");
+		input.add("Transfer 12345678 87654321 300");
+
+		List<String> actual = masterControl.start(input);
+
+		assertEquals(5, actual.size());
+		assertEquals("Checking 12345678 100.00 0.60", actual.get(0));
+		assertEquals("Deposit 12345678 400", actual.get(1));
+		assertEquals("Transfer 12345678 87654321 300", actual.get(2));
+		assertEquals("Savings 87654321 300.00 0.60", actual.get(3));
+		assertEquals("Transfer 12345678 87654321 300", actual.get(4));
+	}
+
+	@Test
+	void transfer_between_accounts_records_for_active_accounts() {
+		input.add("Create checking 12345678 0.6");
+		input.add("Create savings 87654321 0.6");
+		input.add("Deposit 12345678 1000");
+		input.add("Deposit 12345678 200");
+		input.add("Transfer 12345678 87654321 200");
+		input.add("Withdraw 87654321 200");
+		input.add("Pass 1");
+
+		List<String> actual = masterControl.start(input);
+
+		assertEquals(4, actual.size());
+		assertEquals("Checking 12345678 1000.50 0.60", actual.get(0));
+		assertEquals("Deposit 12345678 1000", actual.get(1));
+		assertEquals("Deposit 12345678 200", actual.get(2));
+		assertEquals("Transfer 12345678 87654321 200", actual.get(3));
+	}
+
+	@Test
+	void only_show_history_for_active_account_with_same_id_as_closed_account() {
+		input.add("Create checking 12345678 0.6");
+		input.add("Create savings 87654321 0.6");
+		input.add("Deposit 12345678 1000");
+		input.add("Deposit 12345678 200");
+		input.add("Transfer 12345678 87654321 200");
+		input.add("Withdraw 87654321 200");
+		input.add("Pass 1");
+		input.add("Create savings 87654321 0.6");
+		input.add("Deposit 87654321 300");
+
+		List<String> actual = masterControl.start(input);
+
+		assertEquals(6, actual.size());
+		assertEquals("Checking 12345678 1000.50 0.60", actual.get(0));
+		assertEquals("Deposit 12345678 1000", actual.get(1));
+		assertEquals("Deposit 12345678 200", actual.get(2));
+		assertEquals("Transfer 12345678 87654321 200", actual.get(3));
+		assertEquals("Savings 87654321 300.00 0.60", actual.get(4));
+		assertEquals("Deposit 87654321 300", actual.get(5));
+	}
+
+	@Test
+	void minimum_balance_fee_applied_after_pass_time() {
+		input.add("Create savings 12345678 0.6");
+		input.add("Deposit 12345678 50");
+		input.add("Pass 1");
+
+		List<String> actual = masterControl.start(input);
+
+		assertEquals(2, actual.size());
+		assertEquals("Savings 12345678 25.01 0.60", actual.get(0));
+		assertEquals("Deposit 12345678 50", actual.get(1));
+	}
+
+	@Test
+	void account_closed_when_balance_zero_after_pass() {
+		input.add("Create checking 12345678 0.6");
+		input.add("Deposit 12345678 50");
+		input.add("Withdraw 12345678 50");
+		input.add("Pass 1");
+
+		List<String> actual = masterControl.start(input);
+
+		assertEquals(0, actual.size());
+	}
+
+	@Test
+	void cd_account_remains_without_transactions() {
+		input.add("Create cd 12345678 1.2 2000");
+
+		List<String> actual = masterControl.start(input);
+
+		assertEquals(1, actual.size());
+		assertEquals("Cd 12345678 2000.00 1.20", actual.get(0));
+	}
+
+	@Test
 	void typo_in_create_command_is_invalid() {
 		input.add("creat checking 12345678 1.0");
 
