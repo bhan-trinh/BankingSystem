@@ -19,6 +19,13 @@ public class CreateHandlerTest {
 	private static final String DEFAULT_BALANCE_STRING = "2000";
 	private static final String MIN_CD_CREATE_BALANCE_STRING = "1000";
 	private static final String MAX_CD_CREATE_BALANCE_STRING = "10000";
+	private static final int ZERO_APR = 0;
+	private static final int MAX_APR = 10;
+	private static final int SAVINGS_STARTING_BALANCE = 0;
+	private static final int CHECKING_STARTING_BALANCE = 0;
+	private static final int DEFAULT_BALANCE = 2000;
+	private static final int MIN_CD_BALANCE = 1000;
+	private static final int MAX_CD_BALANCE = 10000;
 
 	CommandHandler commandHandler;
 	Bank bank;
@@ -75,7 +82,7 @@ public class CreateHandlerTest {
 	public void savings_account_with_correct_id_and_zero_apr_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
 				+ " " + ZERO_APR_STRING);
-		assertEquals(0, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
+		assertEquals(ZERO_APR, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
 	}
 
 	@Test
@@ -96,55 +103,55 @@ public class CreateHandlerTest {
 	public void savings_account_with_correct_id_and_max_apr_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
 				+ " " + MAX_APR_STRING);
-		assertEquals(10, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
+		assertEquals(MAX_APR, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
 	}
 
 	@Test
 	public void checking_account_with_correct_id_and_max_apr_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
 				+ " " + MAX_APR_STRING);
-		assertEquals(10, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
+		assertEquals(MAX_APR, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
 	}
 
 	@Test
 	public void cd_account_with_correct_id_and_max_apr_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " "
 				+ MAX_APR_STRING + " " + DEFAULT_BALANCE_STRING);
-		assertEquals(10, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
+		assertEquals(MAX_APR, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getAPR());
 	}
 
 	@Test
 	public void savings_account_with_correct_id_and_balance_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
 				+ " " + DEFAULT_APR_STRING);
-		assertEquals(0, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
+		assertEquals(SAVINGS_STARTING_BALANCE, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
 	}
 
 	@Test
 	public void checking_account_with_correct_id_and_balance_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + CHECKING_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
 				+ " " + DEFAULT_APR_STRING);
-		assertEquals(0, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
+		assertEquals(CHECKING_STARTING_BALANCE, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
 	}
 
 	@Test
 	public void cd_account_with_correct_id_and_balance_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " "
 				+ DEFAULT_APR_STRING + " " + DEFAULT_BALANCE_STRING);
-		assertEquals(2000, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
+		assertEquals(DEFAULT_BALANCE, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
 	}
 
 	@Test
 	public void cd_account_with_minimum_balance_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " "
 				+ DEFAULT_APR_STRING + " " + MIN_CD_CREATE_BALANCE_STRING);
-		assertEquals(1000, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
+		assertEquals(MIN_CD_BALANCE, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
 	}
 
 	@Test
 	public void cd_account_with_maximum_balance_is_created() {
 		commandHandler.handle(CREATE_ACTION_CASE_INSENSITIVE + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1 + " "
 				+ DEFAULT_APR_STRING + " " + MAX_CD_CREATE_BALANCE_STRING);
-		assertEquals(10000, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
+		assertEquals(MAX_CD_BALANCE, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_1).getBalance());
 	}
 }

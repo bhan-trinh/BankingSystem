@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DepositHandlerTest {
-	CommandHandler commandHandler;
-	Bank bank;
 
 	private static final String CREATE_ACTION = "create";
 	private static final String DEPOSIT_ACTION = "deposit";
@@ -22,9 +20,14 @@ public class DepositHandlerTest {
 
 	private static final String DEPOSIT_100 = "100";
 	private static final String DEPOSIT_200 = "200";
-	private static final String DEPOSIT_500 = "500";
-	private static final String DEPOSIT_1000 = "1000";
 	private static final String DEPOSIT_ZERO = "0";
+
+	private static final double ZERO_BALANCE = 0;
+	private static final double BALANCE_100 = 100;
+	private static final double BALANCE_200 = 200;
+
+	CommandHandler commandHandler;
+	Bank bank;
 
 	@BeforeEach
 	public void setUp() {
@@ -39,7 +42,7 @@ public class DepositHandlerTest {
 
 		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_100);
 
-		assertEquals(100, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
+		assertEquals(BALANCE_100, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
 	}
 
 	@Test
@@ -51,7 +54,7 @@ public class DepositHandlerTest {
 
 		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_100);
 
-		assertEquals(300, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
+		assertEquals(BALANCE_100 + BALANCE_200, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
 	}
 
 	@Test
@@ -59,9 +62,9 @@ public class DepositHandlerTest {
 		commandHandler
 				.handle(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_APR);
 
-		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_500);
+		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_100);
 
-		assertEquals(500, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
+		assertEquals(BALANCE_100, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
 	}
 
 	@Test
@@ -69,11 +72,11 @@ public class DepositHandlerTest {
 		commandHandler
 				.handle(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID + " " + DEFAULT_APR);
 
-		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_1000);
+		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_100);
 
-		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_500);
+		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_200);
 
-		assertEquals(1500, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
+		assertEquals(BALANCE_100 + BALANCE_200, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
 	}
 
 	@Test
@@ -83,7 +86,7 @@ public class DepositHandlerTest {
 
 		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_ZERO);
 
-		assertEquals(0, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
+		assertEquals(ZERO_BALANCE, bank.getAccounts().get(DEFAULT_ACCOUNT_ID).getBalance());
 	}
 
 	@Test
@@ -95,7 +98,7 @@ public class DepositHandlerTest {
 
 		commandHandler.handle(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " " + DEPOSIT_200);
 
-		assertEquals(0, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_2).getBalance());
+		assertEquals(ZERO_BALANCE, bank.getAccounts().get(DEFAULT_ACCOUNT_ID_2).getBalance());
 	}
 
 }

@@ -6,15 +6,25 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TransferValidatorTest {
+	private static final String TRANSFER_ACTION = "Transfer";
+	private static final String TRANSFER_ACTION_CASE_INSENSITIVE = "TrAnSfEr";
+
 	private static final String SOURCE_ID = "12345678";
 	private static final String DEST_ID = "98765432";
 	private static final String NON_NUMERIC_ID = "12345abc";
 	private static final String SEVEN_DIGIT_ID = "1234567";
 	private static final String NINE_DIGIT_ID = "123456789";
+	private static final String NON_EXISTING_ID = "99999999";
+
 	private static final double DEFAULT_APR = 0.6;
+
+	private static final int DEFAULT_CD_BALANCE = 100;
+	private static final int DEFAULT_BALANCE = 300;
 	private static final String ZERO_AMOUNT_STRING = "0";
-	private static final int ZERO_BALANCE = 0;
-	private static final String TRANSFER_ACTION = "Transfer";
+	private static final String DEFAULT_TRANSFER_BALANCE_STRING = "100";
+	private static final String MORE_THAN_DEFAULT_BALANCE_STRING = "400";
+
+	private static final int PASS_MIN_MONTH_FOR_VALID_CD_WITHDRAW = 12;
 
 	Bank bank;
 	CommandValidator commandValidator;
@@ -34,9 +44,10 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
@@ -48,9 +59,10 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
@@ -62,9 +74,10 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
@@ -76,9 +89,10 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
@@ -90,9 +104,10 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 200);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 300");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + MORE_THAN_DEFAULT_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
@@ -104,7 +119,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 		assertTrue(actual);
 	}
 
@@ -116,9 +132,10 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 200);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 0");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + ZERO_AMOUNT_STRING);
 		assertTrue(actual);
 	}
 
@@ -131,7 +148,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " -100");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + "-" + DEFAULT_CD_BALANCE);
 
 		assertFalse(actual);
 	}
@@ -171,7 +189,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + SOURCE_ID + " 100");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + SOURCE_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -184,7 +203,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + "99999999" + " " + DEST_ID + " 100");
+		boolean actual = commandValidator.validate(
+				TRANSFER_ACTION + " " + NON_EXISTING_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -197,7 +217,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + "99999999" + " " + "100");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + NON_EXISTING_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -210,8 +231,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator
-				.validate(TRANSFER_ACTION + " " + NON_NUMERIC_ID + " " + DEST_ID + " " + "100");
+		boolean actual = commandValidator.validate(
+				TRANSFER_ACTION + " " + NON_NUMERIC_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -224,8 +245,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator
-				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + NON_NUMERIC_ID + " " + "100");
+		boolean actual = commandValidator.validate(
+				TRANSFER_ACTION + " " + SOURCE_ID + " " + NON_NUMERIC_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -238,8 +259,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator
-				.validate(TRANSFER_ACTION + " " + SEVEN_DIGIT_ID + " " + DEST_ID + " " + "100");
+		boolean actual = commandValidator.validate(
+				TRANSFER_ACTION + " " + SEVEN_DIGIT_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -252,8 +273,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator
-				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + SEVEN_DIGIT_ID + " " + "100");
+		boolean actual = commandValidator.validate(
+				TRANSFER_ACTION + " " + SOURCE_ID + " " + SEVEN_DIGIT_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -266,7 +287,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + NINE_DIGIT_ID + " " + DEST_ID + " " + "100");
+		boolean actual = commandValidator.validate(
+				TRANSFER_ACTION + " " + NINE_DIGIT_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -279,8 +301,8 @@ public class TransferValidatorTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		boolean actual = commandValidator
-				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + NINE_DIGIT_ID + " " + "100");
+		boolean actual = commandValidator.validate(
+				TRANSFER_ACTION + " " + SOURCE_ID + " " + NINE_DIGIT_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}
@@ -288,9 +310,9 @@ public class TransferValidatorTest {
 	// ===== CD =====
 	@Test
 	public void transfer_from_cd_account_is_invalid() {
-		CDAccount cdAccount = new CDAccount(DEFAULT_APR, 100);
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(SOURCE_ID, cdAccount);
-		bank.pass(12);
+		bank.pass(PASS_MIN_MONTH_FOR_VALID_CD_WITHDRAW);
 		String cdBalanceString = (cdAccount.getBalance()) + "";
 
 		CheckingAccount checking = new CheckingAccount(DEFAULT_APR);
@@ -304,14 +326,15 @@ public class TransferValidatorTest {
 
 	@Test
 	public void transfer_to_cd_account_is_invalid() {
-		CDAccount cdAccount = new CDAccount(DEFAULT_APR, 1000);
+		CDAccount cdAccount = new CDAccount(DEFAULT_APR, DEFAULT_CD_BALANCE);
 		bank.addAccount(DEST_ID, cdAccount);
-		bank.pass(12);
+		bank.pass(PASS_MIN_MONTH_FOR_VALID_CD_WITHDRAW);
 
 		CheckingAccount checking = new CheckingAccount(DEFAULT_APR);
 		bank.addAccount(SOURCE_ID, checking);
 
-		boolean actual = commandValidator.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 100");
+		boolean actual = commandValidator
+				.validate(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
 		assertFalse(actual);
 	}

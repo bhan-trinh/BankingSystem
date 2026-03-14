@@ -6,12 +6,19 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TransferHandlerTest {
+	private static final String TRANSFER_ACTION = "Transfer";
+
 	private static final String SOURCE_ID = "12345678";
 	private static final String DEST_ID = "98765432";
+
 	private static final double DEFAULT_APR = 0.6;
+
 	private static final String ZERO_AMOUNT_STRING = "0";
-	private static final int ZERO_BALANCE = 0;
-	private static final String TRANSFER_ACTION = "Transfer";
+	private static final double ZERO_BALANCE = 0;
+	private static final double DEFAULT_BALANCE = 300;
+	private static final String DEFAULT_TRANSFER_BALANCE_STRING = "200";
+	private static final double DEFAULT_TRANSFER_BALANCE = 200;
+	private static final String MORE_THAN_DEFAULT_BALANCE_STRING = "400";
 
 	CommandHandler commandHandler;
 	Bank bank;
@@ -30,12 +37,13 @@ public class TransferHandlerTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		commandHandler
+				.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
-		assertEquals(100, bank.getAccounts().get(SOURCE_ID).getBalance());
-		assertEquals(200, bank.getAccounts().get(DEST_ID).getBalance());
+		assertEquals(DEFAULT_BALANCE - DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(SOURCE_ID).getBalance());
+		assertEquals(DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(DEST_ID).getBalance());
 	}
 
 	@Test
@@ -46,12 +54,13 @@ public class TransferHandlerTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		commandHandler
+				.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
-		assertEquals(100, bank.getAccounts().get(SOURCE_ID).getBalance());
-		assertEquals(200, bank.getAccounts().get(DEST_ID).getBalance());
+		assertEquals(DEFAULT_BALANCE - DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(SOURCE_ID).getBalance());
+		assertEquals(DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(DEST_ID).getBalance());
 	}
 
 	@Test
@@ -62,12 +71,13 @@ public class TransferHandlerTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		commandHandler
+				.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
-		assertEquals(100, bank.getAccounts().get(SOURCE_ID).getBalance());
-		assertEquals(200, bank.getAccounts().get(DEST_ID).getBalance());
+		assertEquals(DEFAULT_BALANCE - DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(SOURCE_ID).getBalance());
+		assertEquals(DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(DEST_ID).getBalance());
 	}
 
 	@Test
@@ -78,12 +88,13 @@ public class TransferHandlerTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 300);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		commandHandler
+				.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
-		assertEquals(100, bank.getAccounts().get(SOURCE_ID).getBalance());
-		assertEquals(200, bank.getAccounts().get(DEST_ID).getBalance());
+		assertEquals(DEFAULT_BALANCE - DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(SOURCE_ID).getBalance());
+		assertEquals(DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(DEST_ID).getBalance());
 	}
 
 	@Test
@@ -94,12 +105,13 @@ public class TransferHandlerTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 200);
+		bank.deposit(SOURCE_ID, DEFAULT_BALANCE);
 
-		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 300");
+		commandHandler
+				.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + MORE_THAN_DEFAULT_BALANCE_STRING);
 
-		assertEquals(0, bank.getAccounts().get(SOURCE_ID).getBalance());
-		assertEquals(200, bank.getAccounts().get(DEST_ID).getBalance());
+		assertEquals(ZERO_BALANCE, bank.getAccounts().get(SOURCE_ID).getBalance());
+		assertEquals(DEFAULT_BALANCE, bank.getAccounts().get(DEST_ID).getBalance());
 	}
 
 	@Test
@@ -110,10 +122,11 @@ public class TransferHandlerTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 200");
+		commandHandler
+				.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + DEFAULT_TRANSFER_BALANCE_STRING);
 
-		assertEquals(0, bank.getAccounts().get(SOURCE_ID).getBalance());
-		assertEquals(0, bank.getAccounts().get(DEST_ID).getBalance());
+		assertEquals(ZERO_BALANCE, bank.getAccounts().get(SOURCE_ID).getBalance());
+		assertEquals(ZERO_BALANCE, bank.getAccounts().get(DEST_ID).getBalance());
 	}
 
 	@Test
@@ -124,11 +137,11 @@ public class TransferHandlerTest {
 		bank.addAccount(SOURCE_ID, source);
 		bank.addAccount(DEST_ID, dest);
 
-		bank.deposit(SOURCE_ID, 200);
+		bank.deposit(SOURCE_ID, DEFAULT_TRANSFER_BALANCE);
 
-		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " 0");
+		commandHandler.handle(TRANSFER_ACTION + " " + SOURCE_ID + " " + DEST_ID + " " + ZERO_AMOUNT_STRING);
 
-		assertEquals(200, bank.getAccounts().get(SOURCE_ID).getBalance());
-		assertEquals(0, bank.getAccounts().get(DEST_ID).getBalance());
+		assertEquals(DEFAULT_TRANSFER_BALANCE, bank.getAccounts().get(SOURCE_ID).getBalance());
+		assertEquals(ZERO_BALANCE, bank.getAccounts().get(DEST_ID).getBalance());
 	}
 }
