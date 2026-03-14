@@ -27,6 +27,8 @@ public class CommandHandler {
 		case "pass":
 			handler = new PassTimeHandler(bank);
 			break;
+		default:
+			break;
 		}
 
 		handler.handle(command);
