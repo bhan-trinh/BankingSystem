@@ -4,19 +4,10 @@ public abstract class Account {
 	private double balance;
 	private final double apr;
 	private String id;
-	private final double maxDepositLimit;
-	private final double maxWithdrawLimit;
-	private final boolean isDepositable;
-	private final boolean isTransferable;
 
-	Account(double apr, double balance, boolean isDepositable, boolean isTransferable, double depositLimit,
-			double withdrawLimit) {
+	Account(double apr, double balance) {
 		this.balance = balance;
 		this.apr = apr;
-		this.maxDepositLimit = depositLimit;
-		this.maxWithdrawLimit = withdrawLimit;
-		this.isDepositable = isDepositable;
-		this.isTransferable = isTransferable;
 	}
 
 	public double getBalance() {
@@ -50,29 +41,17 @@ public abstract class Account {
 		return id;
 	}
 
-	public boolean isDepositable() {
-		return isDepositable;
-	}
+	public abstract boolean isDepositable();
 
-	public boolean isWithdrawable() {
-		return true;
-	}
+	public abstract boolean isWithdrawable();
 
-	public boolean isTransferable() {
-		return isTransferable;
-	}
+	public abstract boolean isTransferable();
 
-	public double getMaxDepositAmount() {
-		return maxDepositLimit;
-	}
+	public abstract double getMaxDepositAmount();
 
-	public double getMaxWithdrawAmount() {
-		return maxWithdrawLimit;
-	}
+	public abstract double getMaxWithdrawAmount();
 
-	public double getMinWithdrawAmount() {
-		return 0;
-	}
+	public abstract double getMinWithdrawAmount();
 
 	public void accrue(double amount) {
 		balance += amount;
