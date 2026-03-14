@@ -1,5 +1,5 @@
-public class DepositCommandValidator extends CommandValidator {
-	public DepositCommandValidator(Bank bank) {
+public class DepositValidator extends BaseValidator {
+	public DepositValidator(Bank bank) {
 		super(bank);
 	}
 

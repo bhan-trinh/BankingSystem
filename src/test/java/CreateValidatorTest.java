@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CreateCommandValidatorTest {
+public class CreateValidatorTest {
 	private static final String CREATE_ACTION = "Create";
 	private static final String SAVINGS_ACCOUNT_TYPE = "savings";
 	private static final String CHECKING_ACCOUNT_TYPE = "checking";
@@ -26,7 +26,7 @@ public class CreateCommandValidatorTest {
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
-		commandValidator = new CreateCommandValidator(bank);
+		commandValidator = new CommandValidator(bank);
 	}
 
 	// ===== GENERAL =====

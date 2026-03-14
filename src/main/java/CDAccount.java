@@ -5,8 +5,4 @@ public class CDAccount extends Account {
 		super(apr, balance, IS_DEPOSITABLE, 0);
 	}
 
-	@Override
-	public boolean isDepositable() {
-		return IS_DEPOSITABLE;
-	}
 }

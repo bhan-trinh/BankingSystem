@@ -1,39 +1,25 @@
 public class CommandValidator {
-	private static final int ID_LENGTH = 8;
-	private static final int MAX_APR = 10;
-	private static final int MIN_APR = 0;
-
 	Bank bank;
+	BaseValidator validator;
 
 	public CommandValidator(Bank bank) {
 		this.bank = bank;
 	}
 
 	public boolean validate(String command) {
-		return false;
-	}
+		String action = command.split(" ")[0].toLowerCase();
 
-	public boolean isValidApr(double apr) {
-		return MIN_APR <= apr && apr <= MAX_APR;
-	}
-
-	public boolean isValidId(String quickId) {
-		boolean isNumeric = isIdNumeric(quickId);
-		boolean isValidLength = quickId.length() == ID_LENGTH;
-
-		return isNumeric && isValidLength;
-
-	}
-
-	private boolean isIdNumeric(String quickId) {
-		if (quickId == null) {
+		switch (action) {
+		case "create":
+			validator = new CreateValidator(bank);
+			break;
+		case "deposit":
+			validator = new DepositValidator(bank);
+			break;
+		default:
 			return false;
 		}
-		try {
-			Double.parseDouble(quickId);
-		} catch (NumberFormatException nfe) {
-			return false;
-		}
-		return true;
+
+		return validator.validate(command);
 	}
 }
