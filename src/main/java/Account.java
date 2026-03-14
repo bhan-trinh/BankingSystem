@@ -2,10 +2,14 @@ public abstract class Account {
 	private double balance;
 	private final double apr;
 	private String id;
+	private final double maxDepositLimit;
+	private final boolean isDepositable;
 
-	Account(double apr, double balance) {
+	Account(double apr, double balance, boolean isDepositable, double depositLimit) {
 		this.balance = balance;
 		this.apr = apr;
+		this.maxDepositLimit = depositLimit;
+		this.isDepositable = isDepositable;
 	}
 
 	public double getBalance() {
@@ -34,5 +38,13 @@ public abstract class Account {
 
 	public String getId() {
 		return id;
+	}
+
+	public boolean isDepositable() {
+		return isDepositable;
+	}
+
+	public double getMaxDepositAmount() {
+		return maxDepositLimit;
 	}
 }

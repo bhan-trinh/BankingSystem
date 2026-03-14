@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Bank {
-	public Map<String, Account> accounts;
+	private final Map<String, Account> accounts;
 
 	public Bank() {
 		accounts = new HashMap<>();
@@ -25,5 +25,9 @@ public class Bank {
 	public void withdraw(String accountId, double v) {
 		Account account = this.getAccounts().get(accountId);
 		account.withdraw(v);
+	}
+
+	public boolean checkAccountExistsById(String quickId) {
+		return accounts.get(quickId) != null;
 	}
 }
