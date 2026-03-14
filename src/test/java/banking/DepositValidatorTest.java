@@ -49,6 +49,16 @@ public class DepositValidatorTest {
 	}
 
 	@Test
+	public void depositing_with_more_than_needed_parameters_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(DEPOSIT_ACTION + " " + DEFAULT_ACCOUNT_ID + " "
+				+ DEFAULT_VALID_BALANCE_STRING + " " + DEFAULT_VALID_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
 	public void depositing_with_non_existing_id_is_invalid() {
 		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
 		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);

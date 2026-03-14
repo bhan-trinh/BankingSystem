@@ -123,6 +123,16 @@ public class WithdrawValidatorTest {
 		assertFalse(actual);
 	}
 
+	@Test
+	public void withdrawing_with_more_than_needed_parameters_is_invalid() {
+		SavingsAccount savingsAccount = new SavingsAccount(DEFAULT_APR);
+		bank.addAccount(DEFAULT_ACCOUNT_ID, savingsAccount);
+
+		boolean actual = commandValidator.validate(
+				WITHDRAW_ACTION + " " + DEFAULT_ACCOUNT_ID_2 + " " + WITHDRAW_300_STRING + " " + WITHDRAW_300_STRING);
+		assertFalse(actual);
+	}
+
 	// ===== SAVINGS =====
 	@Test
 	public void withdrawing_from_savings_account_with_valid_parameters_is_valid() {

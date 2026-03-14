@@ -146,6 +146,27 @@ public class CreateValidatorTest {
 		assertFalse(actual);
 	}
 
+	@Test
+	public void creating_savings_account_with_more_than_arguments_needed_is_invalid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + SAVINGS_ACCOUNT_TYPE + " "
+				+ DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_checking_account_with_more_than_arguments_needed_is_invalid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CHECKING_ACCOUNT_TYPE + " "
+				+ DEFAULT_ACCOUNT_ID_1 + " " + DEFAULT_APR_STRING + " " + DEFAULT_APR_STRING);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void creating_cd_account_with_more_than_arguments_needed_is_invalid() {
+		boolean actual = commandValidator.validate(CREATE_ACTION + " " + CD_ACCOUNT_TYPE + " " + DEFAULT_ACCOUNT_ID_1
+				+ " " + DEFAULT_APR_STRING + " " + DEFAULT_BALANCE_STRING + " " + DEFAULT_BALANCE_STRING);
+		assertFalse(actual);
+	}
+
 	// ===== ID =====
 	@Test
 	public void creating_savings_account_with_duplicate_id_is_invalid() {

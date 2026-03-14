@@ -64,4 +64,11 @@ public class PassTimeValidatorTest {
 		assertFalse(actual);
 	}
 
+	@Test
+	public void pass_with_more_than_needed_parameters_is_invalid() {
+		boolean actual = commandValidator
+				.validate(PASS_TIME_ACTION + " " + PASS_3_MONTHS_STRING + " " + PASS_3_MONTHS_STRING);
+		assertFalse(actual);
+	}
+
 }
