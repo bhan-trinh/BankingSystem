@@ -21,6 +21,8 @@ public class CreateHandler extends BaseHandler {
 			balance = Double.parseDouble(command.split(" ")[4]);
 			addCDAccount(quickId, apr, balance);
 			break;
+		default:
+			break;
 		}
 	}
 

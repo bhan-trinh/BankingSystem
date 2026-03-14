@@ -6,20 +6,11 @@ public class DepositValidator extends BaseValidator {
 	}
 
 	@Override
-	public boolean validate(String command) {
-		String action, quickId;
-		double balance;
-		try {
-			quickId = command.split(" ")[1];
-			balance = Double.parseDouble(command.split(" ")[2]);
-		} catch (Exception e) {
-			return false;
-		}
-
-		return isValidDepositBalance(quickId, balance);
+	protected boolean isValidBalance(String quickId, double amount) {
+		return isValidDepositBalance(quickId, amount);
 	}
 
-	public boolean isValidDepositBalance(String quickId, double balance) {
+	public boolean isValidDepositBalance(String quickId, double amount) {
 		Account depositAccount;
 		if (!bank.checkAccountExistsById(quickId)) {
 			return false;
@@ -27,7 +18,7 @@ public class DepositValidator extends BaseValidator {
 			depositAccount = bank.getAccounts().get(quickId);
 		}
 
-		boolean isValidBalance = !(balance < 0) && !(balance > depositAccount.getMaxDepositAmount());
+		boolean isValidBalance = !(amount < 0) && !(amount > depositAccount.getMaxDepositAmount());
 		return isValidBalance && depositAccount.isDepositable();
 	}
 }

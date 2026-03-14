@@ -19,10 +19,9 @@ public class TransferValidator extends BaseValidator {
 		} catch (Exception e) {
 			return false;
 		}
-		boolean isValidNumberOfArg = this.isValidNumberOfArgument(command, 4);
 		boolean isValidSrcAndDes = validateSrcAndDes(srcId, desId, amount);
 
-		return isValidNumberOfArg && isValidSrcAndDes;
+		return isValidNumberOfArgument(command, 4) && isValidSrcAndDes;
 	}
 
 	public boolean validateSrcAndDes(String srcId, String desId, String amount) {

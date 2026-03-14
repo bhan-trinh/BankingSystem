@@ -1,6 +1,6 @@
 package banking;
 
-public class BaseHandler {
+public abstract class BaseHandler {
 	Bank bank;
 
 	public BaseHandler(Bank bank) {
@@ -8,6 +8,12 @@ public class BaseHandler {
 	}
 
 	public void handle(String command) {
+		String quickId = command.split(" ")[1];
+		double balance = Double.parseDouble(command.split(" ")[2]);
+		bankAction(quickId, balance);
+	}
 
+	protected void bankAction(String quickId, double balance) {
+		// override by deposit and withdraw
 	}
 }

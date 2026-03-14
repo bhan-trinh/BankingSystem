@@ -13,6 +13,7 @@ public class PassTimeValidator extends BaseValidator {
 			return false;
 		}
 
-		return month >= bank.getMinPassTimeMonth() && month <= bank.getMaxPassTimeMonth();
+		return isValidNumberOfArgument(command, 2) && month >= bank.getMinPassTimeMonth()
+				&& month <= bank.getMaxPassTimeMonth();
 	}
 }

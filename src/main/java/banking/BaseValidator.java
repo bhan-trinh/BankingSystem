@@ -1,6 +1,6 @@
 package banking;
 
-public class BaseValidator {
+public abstract class BaseValidator {
 	private static final int ID_LENGTH = 8;
 	private static final int MAX_APR = 10;
 	private static final int MIN_APR = 0;
@@ -12,6 +12,19 @@ public class BaseValidator {
 	}
 
 	public boolean validate(String command) {
+		try {
+			String[] parts = command.split(" ");
+			String quickId = parts[1];
+			double amount = Double.parseDouble(parts[2]);
+
+			return isValidBalance(quickId, amount) && isValidNumberOfArgument(command, 3);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	protected boolean isValidBalance(String quickId, double amount) {
+		// override by deposit and withdraw
 		return false;
 	}
 

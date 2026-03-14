@@ -5,16 +5,8 @@ public class WithdrawValidator extends BaseValidator {
 		super(bank);
 	}
 
-	public boolean validate(String command) {
-		String quickId;
-		double amount;
-		try {
-			quickId = command.split(" ")[1];
-			amount = Double.parseDouble(command.split(" ")[2]);
-		} catch (Exception e) {
-			return false;
-		}
-
+	@Override
+	protected boolean isValidBalance(String quickId, double amount) {
 		return isValidWithdrawBalance(quickId, amount);
 	}
 

@@ -5,9 +5,8 @@ public class DepositHandler extends BaseHandler {
 		super(bank);
 	}
 
-	public void handle(String command) {
-		String quickId = command.split(" ")[1];
-		double balance = Double.parseDouble(command.split(" ")[2]);
+	@Override
+	protected void bankAction(String quickId, double balance) {
 		bank.deposit(quickId, balance);
 	}
 }
