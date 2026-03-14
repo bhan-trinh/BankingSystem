@@ -43,4 +43,9 @@ public class CheckingAccount extends Account {
 	public double getMinWithdrawAmount() {
 		return MIN_WITHDRAW_AMOUNT;
 	}
+
+	@Override
+	public void processMonth() {
+		return;
+	}
 }

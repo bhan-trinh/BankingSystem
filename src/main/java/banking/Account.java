@@ -70,7 +70,5 @@ public abstract class Account {
 		this.accrue(amountAccrued);
 	}
 
-	public void processMonth() {
-		return;
-	}
+	public abstract void processMonth();
 }

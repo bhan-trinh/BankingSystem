@@ -11,7 +11,7 @@ public class TransferValidator extends BaseValidator {
 	}
 
 	public boolean validate(String command) {
-		String srcId, desId, amount, extra = "";
+		String srcId, desId, amount;
 		try {
 			srcId = command.split(" ")[1];
 			desId = command.split(" ")[2];
