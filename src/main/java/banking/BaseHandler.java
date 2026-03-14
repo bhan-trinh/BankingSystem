@@ -3,7 +3,7 @@ package banking;
 public abstract class BaseHandler {
 	Bank bank;
 
-	public BaseHandler(Bank bank) {
+	protected BaseHandler(Bank bank) {
 		this.bank = bank;
 	}
 

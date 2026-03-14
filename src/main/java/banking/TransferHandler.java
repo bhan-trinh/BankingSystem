@@ -1,13 +1,8 @@
 package banking;
 
 public class TransferHandler extends BaseHandler {
-	private final DepositHandler depositHandler;
-	private final WithdrawHandler withdrawHandler;
-
-	public TransferHandler(Bank bank, DepositHandler depositHandler, WithdrawHandler withdrawHandler) {
+	public TransferHandler(Bank bank) {
 		super(bank);
-		this.depositHandler = depositHandler;
-		this.withdrawHandler = withdrawHandler;
 	}
 
 	@Override

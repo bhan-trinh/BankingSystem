@@ -22,9 +22,7 @@ public class CommandHandler {
 			handler = new WithdrawHandler(bank);
 			break;
 		case "transfer":
-			DepositHandler depositHandler = new DepositHandler(bank);
-			WithdrawHandler withdrawHandler = new WithdrawHandler(bank);
-			handler = new TransferHandler(bank, depositHandler, withdrawHandler);
+			handler = new TransferHandler(bank);
 			break;
 		case "pass":
 			handler = new PassTimeHandler(bank);

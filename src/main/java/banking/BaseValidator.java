@@ -7,7 +7,7 @@ public abstract class BaseValidator {
 
 	Bank bank;
 
-	public BaseValidator(Bank bank) {
+	protected BaseValidator(Bank bank) {
 		this.bank = bank;
 	}
 
@@ -24,7 +24,7 @@ public abstract class BaseValidator {
 	}
 
 	protected boolean isValidBalance(String quickId, double amount) {
-		// override by deposit and withdraw
+
 		return false;
 	}
 
